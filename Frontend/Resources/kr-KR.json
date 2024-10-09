@@ -396,5 +396,18 @@
   "Device": "Cihaz",
   "Day": "Roj",
   "Week": "Heft",
-  "Mobile": "Mobile"
+  "Mobile": "Mobile",
+  "Brands": "Markalar",
+  "Measurment Units": "Yekînên Pîvanê",
+  "Suppliers": "Pêşkêşkerên",
+  "Consumables": "Hilberên Xercê",
+  "Product Types": "Cûrekên Hilberan",
+  "Warehouse": "Depoyên",
+  "Inventory Information": "Agahiya envanterê",
+  "Data for Inventory Overview": "Daneyên ji bo serpêhatiya envanterê",
+  "No inventory data available.": "Daneyên envanterê tune.",
+  "Product Name": "Navê hilberê",
+  "Stock": "Embar",
+  "Stock Percentage": "Ji sedî Stock"
+
 }

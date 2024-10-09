@@ -2,6 +2,7 @@
 using Entities.Model;
 using Entities.ModelDto;
 using Repositories.Contracts;
+using Repositories.EFCore;
 using Services.Contracts;
 using System;
 using System.Collections.Generic;
@@ -56,5 +57,12 @@ namespace Services.EFCore
             await _repository.Inventory.Update(inventory);
             await _repository.SaveChangesAsync();
         }
+        public async Task<List<InventoryDto>> GetInventoriesByWarehouseId(int warehouseId)
+        {
+            var inventories = await _repository.Inventory.Read(false);
+            var filteredInventories = inventories.Where(i => i.WarehouseId_FK == warehouseId).ToList();
+            return _mapper.Map<List<InventoryDto>>(filteredInventories);
+        }
+
     }
 }

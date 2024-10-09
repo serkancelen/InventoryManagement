@@ -275,7 +275,7 @@
   "AccessDenied": "Erişim Engellendi",
   "OopsMessage": "Oops! Erişim Reddedildi!",
   "BackToDashboard": "Uwingo kontrol paneline geri dön.",
-  "Description": "Premium Çok Amaçlı Admin & Dashboard Şablonu",
+  "Description": "Açıklama",
   "PageNotFound": "Oops! Üzgünüm, sayfa bulunamadı",
   "SomethingWentWrong": "Bir şeyler ters gitti",
   "An error occurred while processing your request.": "İsteğiniz işlenirken bir hata oluştu.",
@@ -368,5 +368,19 @@
   "Device": "Cihaz",
   "Day": "Gün",
   "Week": "Hafta",
-  "Mobile": "Mobil"
+  "Mobile": "Mobil",
+  "Brands": "Markalar",
+  "Measurment Units": "Ölçü Birimleri",
+  "Suppliers": "Tedarikçiler",
+  "Consumables": "Sarf Malzemeleri",
+  "Product Types": "Ürün Tipleri",
+  "Warehouse": "Depolar",
+  "Inventory Information": "Envanter Bilgileri",
+  "No inventory data available.": "Envanter verisi yok",
+  "Data for Inventory Overview": "Envantere Genel Bakış Verileri",
+  "Product Name": "Ürün Adı",
+  "Stock": "Stok",
+  "Stock Percentage": "Stok Yüzdesi"
+
+
 }

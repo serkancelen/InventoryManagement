@@ -1,0 +1,175 @@
+﻿@{
+    ViewBag.Title = "Warehouse Details";
+}
+
+@model Tuple<List<Inventory>, List<Warehouse>>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">@Localizer["Depo Detayları"]</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">@Localizer["Depo Detayları"]</a></li>
+                            <li class="breadcrumb-item active">@Localizer["Depo Detayları"]</li>
+                        </ol>
+                    </div>
+                    <div class="col-auto align-self-center">
+                        <a href="#" class="btn btn-sm btn-outline-primary" id="Dash_Date">
+                            <span class="day-name" id="Day_Name">@Localizer["Bugün:"]</span>&nbsp;
+                            <span class="" id="Select_date">Jan 11</span>
+                            <i data-feather="calendar" class="align-self-center icon-xs ms-1"></i>
+                        </a>
+                        <a href="#" class="btn btn-sm btn-outline-primary">
+                            <i data-feather="download" class="align-self-center icon-xs"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">@Localizer["Envanterler"]</h4>
+                    <p class="text-muted mb-0">@Localizer["Depoya Bağlı Envanter Verileri"]</p>
+                </div>
+                <div class="card-body">
+                    <div class="button-items">
+                        <a href="@Url.Action("Index", "Warehouse")" class="btn btn-secondary">@Localizer["Depolar"]</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>@Localizer["Serial Number"]</th>
+                                <th>@Localizer["Stock"]</th>
+                                <th>@Localizer["Product ID"]</th>
+                                <th>@Localizer["Beginning Warranty Date"]</th>
+                                <th>@Localizer["Ending Warranty Date"]</th>
+                                <th>@Localizer["Description"]</th>
+                                <th>@Localizer["Güncelle"]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Item1 != null)
+                            {
+                                foreach (var item in Model.Item1)
+                                {
+                                    <tr>
+                                        <td>@item.SerialNumber</td>
+                                        <td>@item.Stock</td>
+                                        <td>@item.ProductId_FK</td>
+                                        <td>@item.BeginningWarrantyDate.ToShortDateString()</td>
+                                        <td>@item.EndingWarrantyDate.ToShortDateString()</td>
+                                        <td>@item.InventoryDescription</td>
+                                        <td>
+                                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#updateInventoryModal"
+                                                    data-inventory-id="@item.InventoryStockId" data-current-warehouse-id="@item.WarehouseId_FK">
+                                                @Localizer["Güncelle"]
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Güncelleme Modalı -->
+<div class="modal fade" id="updateInventoryModal" tabindex="-1" aria-labelledby="updateInventoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateInventoryModalLabel">@Localizer["Envanter Güncelle"]</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="inventoryId" />
+                <div class="mb-3">
+                    <label for="warehouseSelect" class="form-label">@Localizer["Yeni Depo Seçin"]</label>
+                    <select id="warehouseSelect" class="form-select">
+                        <!-- Depo seçeneklerini buraya ekleyin -->
+                        @if (Model.Item2 != null)
+                        {
+                            foreach (var warehouse in Model.Item2)
+                            {
+                                <option value="@warehouse.WarehouseId">@warehouse.WarehouseName</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Localizer["Kapat"]</button>
+                <button type="button" class="btn btn-primary" id="updateInventoryButton">@Localizer["Güncelle"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function deleteWarehouse(id) {
+            if (confirm("@Localizer["Bu depo silinsin mi?"]")) {
+                $.ajax({
+                    url: '@Url.Action("Delete", "Warehouse")',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (result) {
+                        // Başarılı işlem sonrası yönlendirme
+                        window.location.href = '@Url.Action("Index", "Warehouse")';
+                    },
+                    error: function (xhr, status, error) {
+                        alert("@Localizer["Depo silinirken bir hata oluştu."]");
+                    }
+                });
+            }
+        }
+        $(document).ready(function () {
+            $('#updateInventoryModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var inventoryId = button.data('inventory-id');
+                var currentWarehouseId = button.data('current-warehouse-id');
+
+                var modal = $(this);
+                modal.find('#inventoryId').val(inventoryId);
+                modal.find('#warehouseSelect').val(currentWarehouseId);
+            });
+
+            $('#updateInventoryButton').on('click', function () {
+                var inventoryId = $('#inventoryId').val();
+                var newWarehouseId = $('#warehouseSelect').val();
+
+                // Envanter nesnesi oluştur
+                var inventory = {
+                    InventoryStockId: inventoryId, // Envanterin ID'si
+                    WarehouseId_FK: newWarehouseId // Yeni depo ID'si
+                };
+
+                // API çağrısı yap
+                $.ajax({
+                    url: '@Url.Action("Update", "Inventory")',
+                    type: 'POST',
+                    contentType: 'application/json', // JSON formatında içerik
+                    data: JSON.stringify(inventory), // Envanter nesnesini JSON formatında gönder
+                    success: function (result) {
+                        // Başarı durumunda sayfayı yenile
+                        window.location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        alert("@Localizer["Envanter güncellenirken bir hata oluştu: "]" + xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+}

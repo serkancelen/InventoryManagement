@@ -52,5 +52,11 @@ namespace Inventory.Controllers
             }
             return BadRequest();
         }
+        [HttpGet("get-inventories-by-warehouse-id")]
+        public async Task<IActionResult> GetInventoriesByWarehouseId(int warehouseId)
+        {
+            var inventories = await _serviceInventory.GetInventoriesByWarehouseId(warehouseId);
+            return Ok(inventories);
+        }
     }
 }

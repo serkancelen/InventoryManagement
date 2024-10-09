@@ -14,5 +14,6 @@ namespace Services.Contracts
         Task CreateInventory(InventoryDto inventoryDto);
         Task UpdateInventory(InventoryDto inventoryDto);
         Task DeleteInventory(int id);
+        Task<List<InventoryDto>> GetInventoriesByWarehouseId(int warehouseId);
     }
 }

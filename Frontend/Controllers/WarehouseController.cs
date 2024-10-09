@@ -87,5 +87,51 @@ namespace Frontend.Controllers
                 await _httpClient.DeleteAsync("https://localhost:7215/api/MeasurementUnit/delete-measurement-unit/" + id);
             }
         }
+        public async Task<IActionResult> Details(int id)
+        {
+            try
+            {
+                string apiUrl = $"https://localhost:7215/api/InventoryStock/get-inventories-by-warehouse-id?warehouseId={id}";
+                string modelurl = "https://localhost:7215/api/Warehouse/get-warehouses";
+                var response = await _httpClient.GetAsync(apiUrl);
+                string jsonResponseModel = await GetDatas(modelurl);
+                if (response != null || jsonResponseModel != null)
+                {
+                    var jsonResponse = await response.Content.ReadAsStringAsync();
+                    var model = System.Text.Json.JsonSerializer.Deserialize<List<Inventory>>(jsonResponse, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+                    var warehouse = System.Text.Json.JsonSerializer.Deserialize<List<Warehouse>>(jsonResponseModel, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+                    return View("Details", Tuple.Create(model, warehouse));
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "There was an error fetching data from the API.";
+                    return View(new List<Inventory>());
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                return View("Error");
+            }
+
+        }
+        public async Task<string> GetDatas(string uri)
+        {
+            string brandUrl = uri;
+            var response = await _httpClient.GetAsync(brandUrl);
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadAsStringAsync();
+            return null;
+        }
     }
 }
+          
+
+    

@@ -60,6 +60,7 @@
                                 <th>@Localizer["Ana Depo Mu"]</th>
                                 <th>@Localizer["Güncelle"]</th>
                                 <th>@Localizer["Sil"]</th>
+                                <th>@Localizer["Detaylar"]</th> <!-- Yeni sütun -->
                             </tr>
                         </thead>
                         <tbody>
@@ -86,11 +87,19 @@
                                                 </button>
                                             </div>
                                         </td>
+                                        <td>
+                                            <div style="display: inline-block;">
+                                                <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='/Warehouse/Details/@item.WarehouseId'">
+                                                    @Localizer["Detaylar"]
+                                                </button>
+                                            </div>
+                                        </td>
                                     </tr>
                                 }
                             }
                         </tbody>
                     </table>
+
                 </div>
             </div>
         </div>
